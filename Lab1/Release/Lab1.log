@@ -1,0 +1,14 @@
+﻿  Display.cpp
+C:\Users\byo2\Desktop\GP Lab 1 Starter\Lab4\Lab1\Display.h(2,10): fatal error C1083: Cannot open include file: 'SDL/SDL.h': No such file or directory
+  main.cpp
+C:\Users\byo2\Desktop\GP Lab 1 Starter\Lab4\Lab1\MainGame.h(2,10): fatal error C1083: Cannot open include file: 'SDL\SDL.h': No such file or directory
+  MainGame.cpp
+C:\Users\byo2\Desktop\GP Lab 1 Starter\Lab4\Lab1\MainGame.h(2,10): fatal error C1083: Cannot open include file: 'SDL\SDL.h': No such file or directory
+  Mesh.cpp
+C:\Users\byo2\Desktop\GP Lab 1 Starter\Lab4\Lab1\Mesh.h(2,10): fatal error C1083: Cannot open include file: 'glm\glm.hpp': No such file or directory
+  obj_loader.cpp
+C:\Users\byo2\Desktop\GP Lab 1 Starter\Lab4\Lab1\obj_loader.h(4,10): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  Shader.cpp
+C:\Users\byo2\Desktop\GP Lab 1 Starter\Lab4\Lab1\Shader.h(3,10): fatal error C1083: Cannot open include file: 'GL\glew.h': No such file or directory
+  Texture.cpp
+C:\Users\byo2\Desktop\GP Lab 1 Starter\Lab4\Lab1\Texture.h(3,10): fatal error C1083: Cannot open include file: 'GL\glew.h': No such file or directory
