@@ -12,10 +12,10 @@ public:
 	~DisplayWindow();
 	void initDisplay();
 	void swapBuffer();
-	void clearDisplay(float r, float g, float b, float a);
+	void clearDisplayBuffer(float r, float g, float b, float a);
 
-	float getWidth();
-	float getHeight();
+	float getScreenWidth();
+	float getScreenHeight();
 
 private:
 

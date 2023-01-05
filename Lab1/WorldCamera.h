@@ -27,6 +27,17 @@ public:
 	{
 		return projection * glm::lookAt(pos, pos + forward, up);
 	}
+	
+	inline glm::mat4 GetView() const
+	{
+		return glm::lookAt(pos, pos + forward, up);
+	}
+	
+	inline glm::mat4 GetProjection() const
+	{
+		return projection;
+	}
+	
 
 	void MoveForward(float amt)
 	{

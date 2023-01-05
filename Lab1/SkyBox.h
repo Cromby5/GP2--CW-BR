@@ -12,12 +12,13 @@ public:
 	SkyBox();
 	~SkyBox();
 	
-	unsigned int initSkyBox();
+	void initSkyBox();
+	void loadCubeMap();
 
-	void drawSkyBox(Transform transform, WorldCamera camera);
+	void drawSkyBox();
 	
 	unsigned int textureID;
-
+	
 private:
 	GLuint vbo;
 	GLuint vao;

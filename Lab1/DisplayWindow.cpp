@@ -1,6 +1,5 @@
 #include "DisplayWindow.h"
 
-
 DisplayWindow::DisplayWindow()
 {
 	sdlWindow = nullptr; // initialise to generate null access violation for debugging. 
@@ -16,8 +15,8 @@ DisplayWindow::~DisplayWindow()
 	SDL_Quit();
 }
 
-float DisplayWindow::getWidth() { return screenWidth; } //getters
-float DisplayWindow::getHeight() { return screenHeight; }
+float DisplayWindow::getScreenWidth() { return screenWidth; } //getters
+float DisplayWindow::getScreenHeight() { return screenHeight; }
 
 void DisplayWindow::returnError(std::string errorString)
 {
@@ -33,7 +32,7 @@ void DisplayWindow::swapBuffer()
 	SDL_GL_SwapWindow(sdlWindow); //swap buffers
 }
 
-void DisplayWindow::clearDisplay(float r, float g, float b, float a)
+void DisplayWindow::clearDisplayBuffer(float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear colour and depth buffer - set colour to colour defined in glClearColor
@@ -71,6 +70,14 @@ void DisplayWindow::initDisplay()
 
 	glEnable(GL_DEPTH_TEST); // enable z-buffering 
 	glEnable(GL_CULL_FACE); // dont draw faces that are not pointing at the camera
+	//glCullFace(GL_BACK); // dont draw back faces
+	
+	glEnable(GL_FOG); // Enable fog
+	
+	glEnable(GL_LIGHTING); // enable lighting
+	glEnable(GL_LIGHT0); // enable light 0
+	glEnable(GL_COLOR_MATERIAL); // enable colour material
+	
 
 	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 }

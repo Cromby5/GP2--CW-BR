@@ -9,6 +9,9 @@ ShaderHandler::ShaderHandler()
 	shaders[1] = NULL;
 	
 	uniforms[0] = NULL;
+	uniforms[1] = NULL;
+	uniforms[2] = NULL;
+	
 }
 
 
@@ -35,6 +38,8 @@ void ShaderHandler::init(const std::string& filename)
 	CheckShaderError(program, GL_VALIDATE_STATUS, true, "Error: Shader program not valid");
 
 	uniforms[TRANSFORM_U] = glGetUniformLocation(program, "transform"); // associate with the location of uniform variable within a program
+	uniforms[PROJECTION] = glGetUniformLocation(program, "projection");
+	uniforms[VIEW] = glGetUniformLocation(program, "view");
 }
 
 ShaderHandler::~ShaderHandler()
@@ -56,6 +61,15 @@ void ShaderHandler::Update(const Transform& transform, const WorldCamera& camera
 {
 	glm::mat4 mvp = camera.GetViewProjection() * transform.GetModel();
 	glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GLU_FALSE, &mvp[0][0]);
+}
+
+void ShaderHandler::UpdateSky(const Transform& transform, const WorldCamera& camera)
+{
+	//mvp remove translation
+	glm::mat4 view = glm::mat4(glm::mat3(camera.GetView()));
+	glm::mat4 projection = camera.GetProjection();
+	glUniformMatrix4fv(uniforms[VIEW], 1, GLU_FALSE, &view[0][0]);
+	glUniformMatrix4fv(uniforms[PROJECTION], 1, GLU_FALSE, &projection[0][0]);
 }
 
 GLuint ShaderHandler::CompileShader(const std::string& text, unsigned int type)
