@@ -16,6 +16,7 @@ public:
 	void loadCubeMap();
 
 	void drawSkyBox();
+	void drawCube();
 	
 	unsigned int textureID;
 	
@@ -23,6 +24,7 @@ private:
 	GLuint vbo;
 	GLuint vao;
 	GLuint ebo;
+	unsigned int cubeVAO, cubeVBO;
 	ShaderHandler shader;
 };
 

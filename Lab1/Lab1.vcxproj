@@ -137,6 +137,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="GameProcess.cpp" />
     <ClCompile Include="MeshHandler.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="obj_loader.cpp" />
     <ClCompile Include="AudioHandler.cpp" />
     <ClCompile Include="ShaderHandler.cpp" />
@@ -145,6 +146,7 @@
     <ClCompile Include="TextureMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="WorldCamera.h" />
     <ClInclude Include="DisplayWindow.h" />
@@ -159,6 +161,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\Basic.shader" />
+    <None Include="..\res\ReflectShader.frag" />
+    <None Include="..\res\ReflectShader.vert" />
     <None Include="..\res\shader.frag" />
     <None Include="..\res\shader.vert" />
     <None Include="..\res\Skybox.shader" />
@@ -166,16 +170,18 @@
     <None Include="..\res\SkyboxShader.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Object Include="..\res\350z.obj">
+    <Object Include="..\res\Models\350z.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </Object>
-    <Object Include="..\res\monkey3.obj">
+    <Object Include="..\res\Models\cube.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="..\res\Models\monkey3.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </Object>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="..\res\background.wav" />
+    <Media Include="..\res\Audio\background.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

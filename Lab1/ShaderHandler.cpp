@@ -14,7 +14,6 @@ ShaderHandler::ShaderHandler()
 	
 }
 
-
 void ShaderHandler::init(const std::string& filename)
 {
 	program = glCreateProgram(); // create shader program (openGL saves as ref number)
@@ -30,6 +29,7 @@ void ShaderHandler::init(const std::string& filename)
 	glBindAttribLocation(program, 0, "position"); // associate attribute variable with our shader program attribute (in this case attribute vec3 position;)
 	glBindAttribLocation(program, 1, "texCoord");
 	glBindAttribLocation(program, 2, "normals");
+	
 
 	glLinkProgram(program); //create executables that will run on the GPU shaders
 	CheckShaderError(program, GL_LINK_STATUS, true, "Error: Shader program linking failed"); // cheack for error
@@ -40,6 +40,13 @@ void ShaderHandler::init(const std::string& filename)
 	uniforms[TRANSFORM_U] = glGetUniformLocation(program, "transform"); // associate with the location of uniform variable within a program
 	uniforms[PROJECTION] = glGetUniformLocation(program, "projection");
 	uniforms[VIEW] = glGetUniformLocation(program, "view");
+	
+	uniforms[MODEL] = glGetUniformLocation(program, "model");
+	uniforms[CAMERA_POS] = glGetUniformLocation(program, "cameraPos");
+	uniforms[NORMAL] = glGetUniformLocation(program, "normal");
+
+	uniforms[SKYBOX] = glGetUniformLocation(program, "skybox");
+	
 }
 
 ShaderHandler::~ShaderHandler()
@@ -61,6 +68,11 @@ void ShaderHandler::Update(const Transform& transform, const WorldCamera& camera
 {
 	glm::mat4 mvp = camera.GetViewProjection() * transform.GetModel();
 	glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GLU_FALSE, &mvp[0][0]);
+	glUniformMatrix4fv(uniforms[MODEL], 1, GLU_FALSE, &transform.GetModel()[0][0]);
+	glUniformMatrix4fv(uniforms[VIEW], 1, GLU_FALSE, &camera.GetView()[0][0]);
+	glUniformMatrix4fv(uniforms[PROJECTION], 1, GLU_FALSE, &camera.GetProjection()[0][0]);
+	glUniform3fv(uniforms[CAMERA_POS], 1, &camera.GetPos()[0]);
+	glUniform1i(uniforms[SKYBOX], 0);
 }
 
 void ShaderHandler::UpdateSky(const Transform& transform, const WorldCamera& camera)
@@ -70,6 +82,8 @@ void ShaderHandler::UpdateSky(const Transform& transform, const WorldCamera& cam
 	glm::mat4 projection = camera.GetProjection();
 	glUniformMatrix4fv(uniforms[VIEW], 1, GLU_FALSE, &view[0][0]);
 	glUniformMatrix4fv(uniforms[PROJECTION], 1, GLU_FALSE, &projection[0][0]);
+	
+	glUniform1i(uniforms[SKYBOX], 0);
 }
 
 GLuint ShaderHandler::CompileShader(const std::string& text, unsigned int type)

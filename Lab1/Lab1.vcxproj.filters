@@ -45,6 +45,9 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameProcess.h">
@@ -80,6 +83,9 @@
     <ClInclude Include="Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\res\shader.frag">
@@ -100,17 +106,26 @@
     <None Include="..\res\Skybox.shader">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\res\ReflectShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\ReflectShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Object Include="..\res\monkey3.obj">
+    <Object Include="..\res\Models\350z.obj">
       <Filter>Resource Files</Filter>
     </Object>
-    <Object Include="..\res\350z.obj">
+    <Object Include="..\res\Models\cube.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
+    <Object Include="..\res\Models\monkey3.obj">
       <Filter>Resource Files</Filter>
     </Object>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="..\res\background.wav">
+    <Media Include="..\res\Audio\background.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>

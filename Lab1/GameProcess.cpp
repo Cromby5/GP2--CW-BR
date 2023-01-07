@@ -9,12 +9,10 @@ GameProcess::GameProcess()
 	_gameState = GameState::PLAY;
 	DisplayWindow* _gameDisplay = new DisplayWindow(); //new display
 	SkyBox* sky = new SkyBox(); //new skybox
-	MeshHandler* mesh1();
-	MeshHandler* mesh2();
-	counter = 0;
-	whistle = 0;
-	backGroundMusic = 0;
 	
+	MeshHandler* mesh1 = nullptr;
+	MeshHandler* mesh2 = nullptr;
+
 	//Audio* audioDevice();
 }
 
@@ -33,22 +31,30 @@ void GameProcess::initSystems()
 	_gameDisplay.initDisplay();
 	sky.initSkyBox();
 	//whistle = audioDevice.loadSound("..\\res\\bang.wav");
-	gameAudio.addAudioTrack("..\\res\\background.wav");
+	gameAudio.addAudioTrack("..\\res\\Audio\\background.wav");
 
-	mesh1.loadModel("..\\res\\monkey3.obj");
-	mesh2.loadModel("..\\res\\monkey3.obj");
+	mesh1.loadModel("..\\res\\Models\\monkey3.obj");
+	mesh2.loadModel("..\\res\\Models\\monkey3.obj");
+
+	//textures.push_back(TextureMap("..\\res\\Textures\\bricks.jpg", "default"));
+	//textures.push_back(TextureMap("..\\res\\Textures\\water.jpg", "default"));
+
+	texture.LoadTexture("..\\res\\Textures\\bricks.jpg", "default");
+	texture1.LoadTexture("..\\res\\Textures\\water.jpg", "default");
 	
 	myCamera.initWorldCamera(glm::vec3(0, 0, -5), 70.0f, (float)_gameDisplay.getScreenWidth()/_gameDisplay.getScreenHeight(), 0.01f, 1000.0f);
 
 	shader.init("..\\res\\shader"); //new shader
 	skyShader.init("..\\res\\SkyboxShader"); //new skybox shader
+	reflectShader.init("..\\res\\ReflectShader"); //new reflection shader
+	
+	//objects.push_back(Object(shader, texture, "..\\res\\Models\\monkey3.obj"));
+	//objects.push_back(Object(shader, texture1, "..\\res\\Models\\monkey3.obj"));
+	// 
+	
 
 	counter = 1.0f;
 }
-
-float deltatime = 0;
-float lastTicks = 0;
-float currentTicks = 0;
 
 void GameProcess::gameLoop()
 {
@@ -56,21 +62,22 @@ void GameProcess::gameLoop()
 	{
 		// deltatime
 		lastTicks = currentTicks;
-	    currentTicks = SDL_GetTicks();
-		deltatime = (currentTicks - lastTicks) / 1000.0f;
+	    currentTicks = SDL_GetPerformanceCounter();
+		deltatime = ((currentTicks - lastTicks) * 1000 / (double)SDL_GetPerformanceFrequency());;
 		
 		gameAudio.playAudioTrack();
-		processInput();
+		Input();
 		drawGame();
 		collision(mesh1.getSpherePos(), mesh1.getSphereRadius(), mesh2.getSpherePos(), mesh2.getSphereRadius());
+
 		//playAudio(backGroundMusic, glm::vec3(0.0f, 0.0f, 0.0f));	
 	}
 }
 
-void GameProcess::processInput()
+void GameProcess::Input()
 {
 	SDL_Event evnt;
-	
+	float speed = 0.5f;
 	while(SDL_PollEvent(&evnt)) //get and process events
 	{
 		switch (evnt.type)
@@ -82,31 +89,30 @@ void GameProcess::processInput()
 				std::cout << "Key Pressed Down" << std::endl;
 					switch (evnt.key.keysym.sym)
 					{
-						case SDLK_w:
-							myCamera.MoveForward(1.0f);
-						break;
-						case SDLK_s:
-							myCamera.MoveForward(-1.0f);
-							break;
-						case SDLK_a:
-							myCamera.MoveRight(1.0f);
-							break;
-						case SDLK_d:
-							myCamera.MoveRight(-1.0f);
-							break;
-						case SDLK_q:
-							myCamera.Pitch(0.1f);
-							break;
-						case SDLK_e:
-							myCamera.Pitch(-0.1f);
-							break;
-						case SDLK_x:
-							myCamera.RotateY(0.1f);
-							break;
-						case SDLK_z:
-							myCamera.RotateY(-0.1f);
-							break;
+						while (deltatime > 0)
+						{
+							case SDLK_w:
+								myCamera.MoveForward(speed);
+								break;
+							case SDLK_s:
+								myCamera.MoveForward(-speed);
+								break;
+							case SDLK_a:
+								myCamera.MoveRight(speed);
+								break;
+							case SDLK_d:
+								myCamera.MoveRight(-speed);
+								break;
+							case SDLK_ESCAPE:
+								_gameState = GameState::EXIT;
+								break;
+						}
 					}
+				break;
+			case SDL_MOUSEMOTION:
+				SDL_SetRelativeMouseMode(SDL_TRUE); // Lock mouse to window and hide it from view 
+				myCamera.RotateX((-evnt.motion.xrel / 1000.0f)); // Rotate camera on X axis
+				myCamera.RotateY((evnt.motion.yrel / 1000.0f )); // Rotate camera on Y axis
 				break;
 		}
 	}
@@ -131,12 +137,8 @@ bool GameProcess::collision(glm::vec3 m1Pos, float m1Rad, glm::vec3 m2Pos, float
 void GameProcess::drawGame()
 {
 	_gameDisplay.clearDisplayBuffer(0.0f, 0.0f, 0.0f, 1.0f);
-	// fog
-	GLfloat fogColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
-	glFogfv(GL_FOG_COLOR, fogColor);
-	glFogi(GL_FOG_MODE, GL_LINEAR);
-	glFogf(GL_FOG_START, 1.0f);
-	glFogf(GL_FOG_END, 5.0f);
+	
+	//drawFog();
 	
 	skyShader.Use();
 	skyShader.UpdateSky(transform, myCamera);
@@ -146,41 +148,42 @@ void GameProcess::drawGame()
 	transform.SetRot(glm::vec3(0.0, 0.0, 0.0));
 	transform.SetScale(glm::vec3(0.6, 0.6, 0.6));
 	
-	TextureMap texture("..\\res\\bricks.jpg"); //load texture
-	TextureMap texture1("..\\res\\water.jpg"); //load texture
-
-	/*
-	shader.Use();
-	shader.Update(transform, myCamera);
-	texture.Bind(0);
-	mesh1.draw();
-	mesh1.updateSphereData(*transform.GetPos(), 0.6f);
-	*/
-	drawSphere(mesh1, texture, sinf(counter),0.5, 0.0);
+	//glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	//glStencilMask(0xFF);
+	drawSphere(shader,mesh1, texture, sinf(counter), 0.5, 0.0);
+	
+	//objects[0].drawObject(myCamera);
 	
 	transform.SetPos(glm::vec3(-sinf(counter), -0.5, -sinf(counter)*5));
 	transform.SetRot(glm::vec3(0.0, 0.0, 0.0));
 	transform.SetScale(glm::vec3(0.6, 0.6, 0.6));
-	drawSphere(mesh2, texture1, -sinf(counter), -0.5, -sinf(counter) * 5);
-	/*
-	shader.Update(transform, myCamera);
-	texture1.Bind(0);
-	mesh2.draw();
-	mesh2.updateSphereData(*transform.GetPos(), 0.6f);
-	counter = counter + 0.05f;
-	*/
+	//drawSphere(shader,mesh2, texture1, -sinf(counter), -0.5, -sinf(counter) * 5);
+	reflectShader.Use();
+	reflectShader.Update(transform, myCamera);
+	sky.drawCube();
 
+	counter += deltatime * 0.001f;
+	// Enable Writing to the Stencil Buffer?
+	/*
+	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+	glStencilMask(0x00);
+	glDisable(GL_DEPTH_TEST);
+	
+	// Draw Outline
+
+	
+	// Disable Writing to the Stencil Buffer?
+	glStencilMask(0xFF);
+	glStencilFunc(GL_ALWAYS, 0, 0xFF);
+	glEnable(GL_DEPTH_TEST);
+	*/
 	glEnableClientState(GL_COLOR_ARRAY); 
 	glEnd();
-	
-	transform.SetPos(glm::vec3(0.0, 0.0, 0.0));
-	transform.SetRot(glm::vec3(0.0, 0.0, 0.0));
-	transform.SetScale(glm::vec3(100, 100, 100));
 	
 	_gameDisplay.swapBuffer();
 } 
 
-void GameProcess::drawSphere(MeshHandler& mesh, TextureMap& texture,float x,float y,float z)
+void GameProcess::drawSphere(ShaderHandler& shader,MeshHandler& mesh, TextureMap& texture,float x,float y,float z)
 {
 	shader.Use();
 	shader.Update(transform, myCamera);
@@ -188,3 +191,23 @@ void GameProcess::drawSphere(MeshHandler& mesh, TextureMap& texture,float x,floa
 	mesh.draw();
 	mesh.updateSphereData(*transform.GetPos(), 0.6f);
 }
+
+void GameProcess::drawFog()
+{
+	// fog
+	GLfloat fogColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f };
+	glFogfv(GL_FOG_COLOR, fogColor);
+	
+	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogf(GL_FOG_START, 1.0f);
+	glFogf(GL_FOG_END, 5.0f);
+	glFogf(GL_FOG_DENSITY, 0.35f);
+}
+
+
+
+
+
+
+
+

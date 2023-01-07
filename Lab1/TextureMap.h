@@ -6,7 +6,12 @@
 class TextureMap
 {
 public:
-	TextureMap(const std::string& fileName);
+	
+	TextureMap();
+	
+    TextureMap(const std::string& fileName,const std::string& type);
+
+	void LoadTexture(const std::string& fileName, const std::string& type);
 
 	void Bind(unsigned int unit); // bind upto 32 textures
 

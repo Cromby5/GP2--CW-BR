@@ -3,6 +3,7 @@
 #include <GL\glew.h>
 #include <string>
 #include "obj_loader.h"
+#include "transform.h"
 
 struct Vertex
 {
@@ -69,7 +70,7 @@ public:
 private:
 	enum
 	{
-		POSITION_VERTEXBUFFER,
+		POSITION_VB,
 		TEXCOORD_VB,
 		NORMAL_VB,
 		INDEX_VB,
@@ -79,5 +80,5 @@ private:
 	Sphere meshSphere;
 	GLuint vertexArrayObject;
 	GLuint vertexArrayBuffers[NUM_BUFFERS]; // create our array of buffers
-	unsigned int drawCount; //how much of the vertexArrayObject do we want to draw
+	unsigned int drawCount; // how much of the vertexArrayObject do we want to draw
 };

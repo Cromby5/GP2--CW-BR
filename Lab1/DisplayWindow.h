@@ -16,6 +16,7 @@ public:
 
 	float getScreenWidth();
 	float getScreenHeight();
+	SDL_Window* getWindow();
 
 private:
 

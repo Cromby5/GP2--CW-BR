@@ -23,6 +23,11 @@ public:
 		return this->pos;
 	}
 
+	inline glm::vec3 GetPos() const
+	{
+		return pos;
+	}
+
 	inline glm::mat4 GetViewProjection() const
 	{
 		return projection * glm::lookAt(pos, pos + forward, up);
@@ -38,18 +43,18 @@ public:
 		return projection;
 	}
 	
-
-	void MoveForward(float amt)
+	
+	void MoveForward(float speed)
 	{
-		pos += forward * amt;
+		pos += forward * speed;
 	}
 
-	void MoveRight(float amt)
+	void MoveRight(float speed)
 	{
-		pos += glm::cross(up, forward) * amt;
+		pos += glm::normalize(glm::cross(up, forward)) * speed;
 	}
 
-	void Pitch(float angle)
+	void RotateY(float angle)
 	{
 		glm::vec3 right = glm::normalize(glm::cross(up, forward));
 
@@ -57,7 +62,7 @@ public:
 		up = glm::normalize(glm::cross(forward, right));
 	}
 
-	void RotateY(float angle)
+	void RotateX(float angle)
 	{
 		static const glm::vec3 UP(0.0f, 1.0f, 0.0f);
 

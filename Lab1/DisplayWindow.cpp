@@ -17,6 +17,7 @@ DisplayWindow::~DisplayWindow()
 
 float DisplayWindow::getScreenWidth() { return screenWidth; } //getters
 float DisplayWindow::getScreenHeight() { return screenHeight; }
+SDL_Window* DisplayWindow::getWindow() { return sdlWindow; }
 
 void DisplayWindow::returnError(std::string errorString)
 {
@@ -29,24 +30,24 @@ void DisplayWindow::returnError(std::string errorString)
 
 void DisplayWindow::swapBuffer()
 {
-	SDL_GL_SwapWindow(sdlWindow); //swap buffers
+	SDL_GL_SwapWindow(sdlWindow); // swap buffers 
 }
 
 void DisplayWindow::clearDisplayBuffer(float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // clear colour and depth buffer - set colour to colour defined in glClearColor
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT); // clear colour and depth buffer - set colour to colour defined in glClearColor
 }
 
 void DisplayWindow::initDisplay()
 {
-	SDL_Init(SDL_INIT_EVERYTHING); //initalise everything
+	SDL_Init(SDL_INIT_EVERYTHING); // Initalise everything
 
-	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8); //Min no of bits used to diplay colour
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8); // Min no of bits used to diplay colour
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);// set up z-buffer
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); // set up double buffer   
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);// Set up z-buffer
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); // Set up double buffer   
 
 	sdlWindow = SDL_CreateWindow("Game Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, (int)screenWidth, (int)screenHeight, SDL_WINDOW_OPENGL); // create window
 
@@ -70,14 +71,19 @@ void DisplayWindow::initDisplay()
 
 	glEnable(GL_DEPTH_TEST); // enable z-buffering 
 	glEnable(GL_CULL_FACE); // dont draw faces that are not pointing at the camera
-	//glCullFace(GL_BACK); // dont draw back faces
+	glCullFace(GL_BACK);
+	//glFrontFace(GL_CCW);
+
+	glEnable(GL_STENCIL_TEST); // enable stencil buffer
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); // set stencil buffer to replace values with 1 when the stencil test passes
 	
 	glEnable(GL_FOG); // Enable fog
 	
 	glEnable(GL_LIGHTING); // enable lighting
 	glEnable(GL_LIGHT0); // enable light 0
 	glEnable(GL_COLOR_MATERIAL); // enable colour material
-	
 
+	SDL_GL_SetSwapInterval(0); // set to 0 to disable vsync
+	
 	glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
 }

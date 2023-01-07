@@ -10,7 +10,7 @@ public:
 	ShaderHandler();
 
 	void Use(); // Set gpu to use our shaders
-	//void ParseShader(const std::string& filename); // Parse the shader files
+	//void ParseShader(const std::string& filename); // Parse the shader files to seperate vert and frag shaders
 	void Update(const Transform& transform, const WorldCamera& camera);
 	void UpdateSky(const Transform& transform, const WorldCamera& camera);
 	void init(const std::string& filename);
@@ -29,9 +29,12 @@ private:
 	enum
 	{
 		TRANSFORM_U,
-		PROJECTION,
+		MODEL,
 		VIEW,
-
+		PROJECTION,
+		CAMERA_POS,
+		NORMAL,
+		SKYBOX,
 		NUM_UNIFORMS
 	};
 
