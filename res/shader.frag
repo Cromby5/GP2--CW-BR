@@ -1,10 +1,37 @@
-#version 120
+#version 330 core
 
-varying vec2 texCoord0;
+out vec4 FragColour;
+
+in vec2 texCoord0;
+
+in vec3 Normal;
+in vec3 currentPos;
 
 uniform sampler2D diffuse;
+uniform sampler2D spec;
+
+uniform vec4 lightColour;
+
+uniform vec3 lightPos;
+uniform vec3 cameraPos;
 
 void main()
 {
-	gl_FragColor = texture2D(diffuse, texCoord0);
+	float ambient = 0.20f; // Adding an ambient light value
+	// Diffuse Lighting
+	vec3 normal = normalize(Normal);
+	vec3 lightDirection = normalize(lightPos - currentPos);
+	//vec3 lightDirection = normalize(currentPos - lightPos);
+	
+	float diffuseLight = max(dot(normal,lightDirection), 0.0f);
+	
+	// Specular Lighting 
+	float specularLight = 0.50f; 
+	vec3 viewDir = normalize(cameraPos - currentPos);
+	vec3 reflectDir = reflect(-lightDirection,normal);
+	float specularAmount = pow(max(dot(viewDir,reflectDir),0.0f),8);
+	float specular = specularAmount * specularLight;
+	
+	//FragColour = texture(diffuse, texCoord0) * lightColour * (diffuseLight + ambient + specular);
+	FragColour = texture(diffuse, texCoord0) * lightColour * (diffuseLight + ambient) +  texture(spec, texCoord0).r * specular;
 }

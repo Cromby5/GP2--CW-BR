@@ -8,11 +8,14 @@ class ShaderHandler
 {
 public:
 	ShaderHandler();
+	ShaderHandler(const std::string& fileName);
 
 	void Use(); // Set gpu to use our shaders
 	//void ParseShader(const std::string& filename); // Parse the shader files to seperate vert and frag shaders
 	void Update(const Transform& transform, const WorldCamera& camera);
 	void UpdateSky(const Transform& transform, const WorldCamera& camera);
+	void UpdateLight(const Transform& transform, const WorldCamera& camera);
+	
 	void init(const std::string& filename);
 
 	std::string ShaderHandler::LoadShader(const std::string& fileName);
@@ -33,8 +36,12 @@ private:
 		VIEW,
 		PROJECTION,
 		CAMERA_POS,
+		LIGHT_POS,
 		NORMAL,
 		SKYBOX,
+		LIGHT_COLOUR,
+		//DIFFUSE,
+		//SPECULAR,
 		NUM_UNIFORMS
 	};
 

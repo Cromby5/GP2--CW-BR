@@ -8,6 +8,7 @@ attribute vec3 normals;
 varying vec2 texCoord0;
 
 uniform mat4 transform;
+uniform mat4 model;
 
 void main()
 {

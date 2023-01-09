@@ -45,7 +45,7 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
+    <ClCompile Include="ObjectHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -83,7 +83,7 @@
     <ClInclude Include="Skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
+    <ClInclude Include="ObjectHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -112,6 +112,18 @@
     <None Include="..\res\ReflectShader.vert">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\res\RefractShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\RefractShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\LightShader.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\res\LightShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Object Include="..\res\Models\350z.obj">
@@ -121,6 +133,9 @@
       <Filter>Resource Files</Filter>
     </Object>
     <Object Include="..\res\Models\monkey3.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
+    <Object Include="..\res\Models\canoe.obj">
       <Filter>Resource Files</Filter>
     </Object>
   </ItemGroup>

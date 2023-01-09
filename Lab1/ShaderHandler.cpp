@@ -14,6 +14,11 @@ ShaderHandler::ShaderHandler()
 	
 }
 
+ShaderHandler::ShaderHandler(const std::string& filename)
+{
+	init(filename);
+}
+
 void ShaderHandler::init(const std::string& filename)
 {
 	program = glCreateProgram(); // create shader program (openGL saves as ref number)
@@ -25,7 +30,7 @@ void ShaderHandler::init(const std::string& filename)
 		glAttachShader(program, shaders[i]); //add all our shaders to the shader program "shaders"
 		glDeleteShader(shaders[i]); // delete the shaders, once attached to the program (they are now saved in the program) 
 	}
-
+	// These may be outdated when using version 330 over version 120 due to syntax changes. e.g. attribute has changed to layout where the location is specified in the shader
 	glBindAttribLocation(program, 0, "position"); // associate attribute variable with our shader program attribute (in this case attribute vec3 position;)
 	glBindAttribLocation(program, 1, "texCoord");
 	glBindAttribLocation(program, 2, "normals");
@@ -37,7 +42,7 @@ void ShaderHandler::init(const std::string& filename)
 	glValidateProgram(program); //check the entire program is valid
 	CheckShaderError(program, GL_VALIDATE_STATUS, true, "Error: Shader program not valid");
 
-	uniforms[TRANSFORM_U] = glGetUniformLocation(program, "transform"); // associate with the location of uniform variable within a program
+	uniforms[TRANSFORM_U] = glGetUniformLocation(program, "transform"); // associate with the location of uniform variable within a program 
 	uniforms[PROJECTION] = glGetUniformLocation(program, "projection");
 	uniforms[VIEW] = glGetUniformLocation(program, "view");
 	
@@ -46,7 +51,18 @@ void ShaderHandler::init(const std::string& filename)
 	uniforms[NORMAL] = glGetUniformLocation(program, "normal");
 
 	uniforms[SKYBOX] = glGetUniformLocation(program, "skybox");
+
+	uniforms[LIGHT_COLOUR] = glGetUniformLocation(program, "lightColour");
+	uniforms[LIGHT_POS] = glGetUniformLocation(program, "lightPos");
+
+	//uniforms[DIFFUSE] = glGetUniformLocation(program, "diffuse");
+	//uniforms[SPECULAR] = glGetUniformLocation(program, "specular");
 	
+
+	glUniform1i(uniforms[SKYBOX], 0);
+	//glUniform1i(uniforms[DIFFUSE], 0);
+	//glUniform1i(uniforms[SPECULAR], 1);
+		
 }
 
 ShaderHandler::~ShaderHandler()
@@ -72,7 +88,10 @@ void ShaderHandler::Update(const Transform& transform, const WorldCamera& camera
 	glUniformMatrix4fv(uniforms[VIEW], 1, GLU_FALSE, &camera.GetView()[0][0]);
 	glUniformMatrix4fv(uniforms[PROJECTION], 1, GLU_FALSE, &camera.GetProjection()[0][0]);
 	glUniform3fv(uniforms[CAMERA_POS], 1, &camera.GetPos()[0]);
-	glUniform1i(uniforms[SKYBOX], 0);
+	
+	glm::vec4 lightColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	glUniform4fv(uniforms[LIGHT_COLOUR], 1, &lightColour[0]);
+	glUniform3fv(uniforms[LIGHT_POS], 1, &transform.GetPos()[0]);
 }
 
 void ShaderHandler::UpdateSky(const Transform& transform, const WorldCamera& camera)
@@ -84,6 +103,15 @@ void ShaderHandler::UpdateSky(const Transform& transform, const WorldCamera& cam
 	glUniformMatrix4fv(uniforms[PROJECTION], 1, GLU_FALSE, &projection[0][0]);
 	
 	glUniform1i(uniforms[SKYBOX], 0);
+}
+
+void ShaderHandler::UpdateLight(const Transform& transform, const WorldCamera& camera)
+{
+	glUniform3fv(uniforms[CAMERA_POS], 1, &camera.GetPos()[0]);
+	glm::vec4 lightColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	glUniform4fv(uniforms[LIGHT_COLOUR], 1, &lightColour[0]);
+	glUniform3fv(uniforms[LIGHT_POS], 1, &transform.GetPos()[0]);
+
 }
 
 GLuint ShaderHandler::CompileShader(const std::string& text, unsigned int type)

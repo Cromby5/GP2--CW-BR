@@ -11,7 +11,7 @@
 #include "AudioHandler.h"
 #include "WorldCamera.h"
 #include "SkyBox.h"
-#include "Object.h"
+#include "ObjectHandler.h"
 
 enum class GameState{PLAY, EXIT};
 
@@ -38,10 +38,14 @@ private:
 	GameState _gameState;
 	MeshHandler mesh1;
 	MeshHandler mesh2;
+	MeshHandler lightCube;
 	WorldCamera myCamera;
+	
 	ShaderHandler shader;
 	ShaderHandler skyShader;
 	ShaderHandler reflectShader;
+	ShaderHandler refractShader;
+	ShaderHandler lightShader;
 		
 	TextureMap texture;
 	TextureMap texture1;
@@ -49,8 +53,8 @@ private:
 	AudioHandler gameAudio;
 	SkyBox sky;
 
-	vector<Object> objects;
-	vector<TextureMap> textures;
+	ObjectHandler objectHandler;
+
 		
 	float counter = 0.0f;
 	

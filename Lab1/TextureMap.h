@@ -9,9 +9,9 @@ public:
 	
 	TextureMap();
 	
-    TextureMap(const std::string& fileName,const std::string& type);
+    TextureMap(const std::string& fileName);
 
-	void LoadTexture(const std::string& fileName, const std::string& type);
+	void LoadTexture(const std::string& fileName, GLuint unit);
 
 	void Bind(unsigned int unit); // bind upto 32 textures
 
@@ -19,7 +19,16 @@ public:
 
 protected:
 private:
-
-	GLuint textureHandler;
+	enum
+	{
+		DEFAULT,
+		NORMAL,
+		SPECULAR,
+		NUM_TYPES
+	};
+	
+	GLuint textureHandler[NUM_TYPES];
+	
+	
 };
 

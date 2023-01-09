@@ -9,6 +9,7 @@ GameProcess::GameProcess()
 	_gameState = GameState::PLAY;
 	DisplayWindow* _gameDisplay = new DisplayWindow(); //new display
 	SkyBox* sky = new SkyBox(); //new skybox
+	ObjectHandler* objectHandler = new ObjectHandler(); //new object handler
 	
 	MeshHandler* mesh1 = nullptr;
 	MeshHandler* mesh2 = nullptr;
@@ -30,28 +31,24 @@ void GameProcess::initSystems()
 {
 	_gameDisplay.initDisplay();
 	sky.initSkyBox();
+	objectHandler.initObjects();
 	//whistle = audioDevice.loadSound("..\\res\\bang.wav");
 	gameAudio.addAudioTrack("..\\res\\Audio\\background.wav");
 
 	mesh1.loadModel("..\\res\\Models\\monkey3.obj");
-	mesh2.loadModel("..\\res\\Models\\monkey3.obj");
+	mesh2.loadModel("..\\res\\Models\\canoe.obj");
+	lightCube.loadModel("..\\res\\Models\\cube.obj");
 
-	//textures.push_back(TextureMap("..\\res\\Textures\\bricks.jpg", "default"));
-	//textures.push_back(TextureMap("..\\res\\Textures\\water.jpg", "default"));
-
-	texture.LoadTexture("..\\res\\Textures\\bricks.jpg", "default");
-	texture1.LoadTexture("..\\res\\Textures\\water.jpg", "default");
+	texture.LoadTexture("..\\res\\Textures\\bricks.jpg", 0);
+	texture1.LoadTexture("..\\res\\Textures\\water.jpg", 0);
 	
-	myCamera.initWorldCamera(glm::vec3(0, 0, -5), 70.0f, (float)_gameDisplay.getScreenWidth()/_gameDisplay.getScreenHeight(), 0.01f, 1000.0f);
+	myCamera.initWorldCamera(glm::vec3(0, 0, 5), 70.0f, (float)_gameDisplay.getScreenWidth()/_gameDisplay.getScreenHeight(), 0.01f, 1000.0f);
 
 	shader.init("..\\res\\shader"); //new shader
 	skyShader.init("..\\res\\SkyboxShader"); //new skybox shader
 	reflectShader.init("..\\res\\ReflectShader"); //new reflection shader
-	
-	//objects.push_back(Object(shader, texture, "..\\res\\Models\\monkey3.obj"));
-	//objects.push_back(Object(shader, texture1, "..\\res\\Models\\monkey3.obj"));
-	// 
-	
+	refractShader.init("..\\res\\RefractShader"); //new refraction shader
+	lightShader.init("..\\res\\LightShader"); //new light shader
 
 	counter = 1.0f;
 }
@@ -144,20 +141,20 @@ void GameProcess::drawGame()
 	skyShader.UpdateSky(transform, myCamera);
 	sky.drawSkyBox();
 	
-	transform.SetPos(glm::vec3(sinf(counter), 0.5, 0.0));
-	transform.SetRot(glm::vec3(0.0, 0.0, 0.0));
-	transform.SetScale(glm::vec3(0.6, 0.6, 0.6));
+	objectHandler.drawObjects(myCamera);
 	
 	//glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	//glStencilMask(0xFF);
 	drawSphere(shader,mesh1, texture, sinf(counter), 0.5, 0.0);
 	
-	//objects[0].drawObject(myCamera);
+	drawSphere(shader,mesh2, texture1, -sinf(counter), -0.5, -sinf(counter) * 5);
 	
-	transform.SetPos(glm::vec3(-sinf(counter), -0.5, -sinf(counter)*5));
+	drawSphere(lightShader, lightCube, texture, 5.0, 1.5, 0.0);
+	
+	transform.SetPos(glm::vec3(2.0, 1.5, 3.0));
 	transform.SetRot(glm::vec3(0.0, 0.0, 0.0));
-	transform.SetScale(glm::vec3(0.6, 0.6, 0.6));
-	//drawSphere(shader,mesh2, texture1, -sinf(counter), -0.5, -sinf(counter) * 5);
+	transform.SetScale(glm::vec3(1.0, 1.0, 1.0));
+	
 	reflectShader.Use();
 	reflectShader.Update(transform, myCamera);
 	sky.drawCube();
@@ -185,11 +182,14 @@ void GameProcess::drawGame()
 
 void GameProcess::drawSphere(ShaderHandler& shader,MeshHandler& mesh, TextureMap& texture,float x,float y,float z)
 {
+	transform.SetPos(glm::vec3(x, y, z));
+	transform.SetRot(glm::vec3(0.0, 0.0, 0.0));
+	transform.SetScale(glm::vec3(0.6, 0.6, 0.6));
 	shader.Use();
 	shader.Update(transform, myCamera);
 	texture.Bind(0);
 	mesh.draw();
-	mesh.updateSphereData(*transform.GetPos(), 0.6f);
+	mesh.updateSphereData(transform.GetPos(), 0.6f);
 }
 
 void GameProcess::drawFog()
