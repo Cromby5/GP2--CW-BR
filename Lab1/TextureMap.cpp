@@ -72,6 +72,7 @@ void TextureMap::Bind(unsigned int unit)
 	assert(unit >= 0 && unit <= NUM_TYPES); 
 	glActiveTexture(GL_TEXTURE0 + unit); //set acitve texture unit
 	glBindTexture(GL_TEXTURE_2D, textureHandler[unit]); //type of and texture to bind to unit
+	glActiveTexture(GL_TEXTURE0);
 }
 
 

@@ -14,18 +14,23 @@ struct Object
 public:
 	Object()
 	{
-
+		
 	};
 	
-	Object(const std::string& meshName, TextureMap& texture, ShaderHandler& shader)
+	Object(MeshHandler& mesh, TextureMap& texture, ShaderHandler& shader)
+	{
+		LoadObject(mesh, texture, shader);
+	};
+
+	void LoadObject(MeshHandler& mesh, TextureMap& texture, ShaderHandler& shader)
 	{
 		_texture = texture;
 		_shader = shader;
-		_mesh.loadModel(meshName);
+		_mesh = mesh;
 		_transform.SetPos(glm::vec3(0.0, 0.0, 0.0));
 		_transform.SetRot(glm::vec3(0.0, 0.0, 0.0));
 		_transform.SetScale(glm::vec3(1.0, 1.0, 1.0));
-	};
+	}
 	
 	inline void SetObjectPos(glm::vec3& pos) {_transform.SetPos(pos);}
 	inline void SetObjectRot(glm::vec3& rot) { _transform.SetRot(rot);}
@@ -48,13 +53,17 @@ public:
 
 	~ObjectHandler();
 	void initObjects();
+	void initTextures();
+	void initShaders();
 	void drawObjects(WorldCamera& myCamera);
 
 	
 private:
-	// TESTING
-	//Object a;
-
+	// TESTING struct
+	/*
+	Object a;
+	Object b;
+	*/
 	Transform _transform;
 	// objects
 	std::vector<Object> objects;

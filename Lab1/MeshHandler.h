@@ -57,6 +57,7 @@ class MeshHandler
 {
 public:
 	MeshHandler();
+	MeshHandler(const std::string& filename);
 	~MeshHandler();
 
 	void draw();

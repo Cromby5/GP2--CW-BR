@@ -1,5 +1,3 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Lab1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  GameProcess.cpp
-D:\Uni\Programming 2\CW\GP2- CW BR\Lab1\GameProcess.cpp(62,46): warning C4244: '=': conversion from 'Uint64' to 'float', possible loss of data
-D:\Uni\Programming 2\CW\GP2- CW BR\Lab1\GameProcess.cpp(63,50): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  ObjectHandler.cpp
   Lab1.vcxproj -> D:\Uni\Programming 2\CW\GP2- CW BR\Debug\GP2 CW BR.exe

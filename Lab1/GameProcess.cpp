@@ -11,8 +11,8 @@ GameProcess::GameProcess()
 	SkyBox* sky = new SkyBox(); //new skybox
 	ObjectHandler* objectHandler = new ObjectHandler(); //new object handler
 	
-	MeshHandler* mesh1 = nullptr;
-	MeshHandler* mesh2 = nullptr;
+	MeshHandler* mesh1 = new MeshHandler();
+	MeshHandler* mesh2 = new MeshHandler();
 
 	//Audio* audioDevice();
 }

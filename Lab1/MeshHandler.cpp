@@ -59,6 +59,12 @@ MeshHandler::MeshHandler()
 	vertexArrayObject = NULL;
 }
 
+MeshHandler::MeshHandler(const std::string& filename)
+{
+	loadModel(filename);
+}
+
+
 void MeshHandler::loadModel(const std::string& filename)
 {
 	IndexedModel model = OBJModel(filename).ToIndexedModel();
