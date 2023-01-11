@@ -174,10 +174,13 @@
     <None Include="..\res\SkyboxShader.vert" />
   </ItemGroup>
   <ItemGroup>
-    <Object Include="..\res\Models\350z.obj">
+    <Object Include="..\res\Models\backpack.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </Object>
     <Object Include="..\res\Models\canoe.obj">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </Object>
+    <Object Include="..\res\Models\cart.obj">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </Object>
     <Object Include="..\res\Models\cube.obj">

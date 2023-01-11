@@ -32,7 +32,7 @@ void GameProcess::initSystems()
 	_gameDisplay.initDisplay();
 	sky.initSkyBox();
 	objectHandler.initObjects();
-	//whistle = audioDevice.loadSound("..\\res\\bang.wav");
+	gameAudio.addSoundEffect("..\\res\\Audio\\bang.wav");
 	gameAudio.addAudioTrack("..\\res\\Audio\\background.wav");
 
 	mesh1.loadModel("..\\res\\Models\\monkey3.obj");
@@ -45,9 +45,6 @@ void GameProcess::initSystems()
 	myCamera.initWorldCamera(glm::vec3(0, 0, 5), 70.0f, (float)_gameDisplay.getScreenWidth()/_gameDisplay.getScreenHeight(), 0.01f, 1000.0f);
 
 	shader.init("..\\res\\shader"); //new shader
-	skyShader.init("..\\res\\SkyboxShader"); //new skybox shader
-	reflectShader.init("..\\res\\ReflectShader"); //new reflection shader
-	refractShader.init("..\\res\\RefractShader"); //new refraction shader
 	lightShader.init("..\\res\\LightShader"); //new light shader
 
 	counter = 1.0f;
@@ -65,7 +62,8 @@ void GameProcess::gameLoop()
 		gameAudio.playAudioTrack();
 		Input();
 		drawGame();
-		collision(mesh1.getSpherePos(), mesh1.getSphereRadius(), mesh2.getSpherePos(), mesh2.getSphereRadius());
+		//collision(mesh1.getSpherePos(), mesh1.getSphereRadius(), mesh2.getSpherePos(), mesh2.getSphereRadius());
+		objectHandler.collision();
 
 		//playAudio(backGroundMusic, glm::vec3(0.0f, 0.0f, 0.0f));	
 	}
@@ -74,8 +72,7 @@ void GameProcess::gameLoop()
 void GameProcess::Input()
 {
 	SDL_Event evnt;
-	float speed = 0.5f;
-	while(SDL_PollEvent(&evnt)) //get and process events
+	while(SDL_PollEvent(&evnt)) // Get and process events using the SDL event system 
 	{
 		switch (evnt.type)
 		{
@@ -83,7 +80,6 @@ void GameProcess::Input()
 				_gameState = GameState::EXIT;
 				break;
 			case SDL_KEYDOWN:
-				std::cout << "Key Pressed Down" << std::endl;
 					switch (evnt.key.keysym.sym)
 					{
 						while (deltatime > 0)
@@ -95,10 +91,10 @@ void GameProcess::Input()
 								myCamera.MoveForward(-speed);
 								break;
 							case SDLK_a:
-								myCamera.MoveRight(speed);
+								myCamera.MoveRight(-speed);
 								break;
 							case SDLK_d:
-								myCamera.MoveRight(-speed);
+								myCamera.MoveRight(speed);
 								break;
 							case SDLK_ESCAPE:
 								_gameState = GameState::EXIT;
@@ -108,8 +104,8 @@ void GameProcess::Input()
 				break;
 			case SDL_MOUSEMOTION:
 				SDL_SetRelativeMouseMode(SDL_TRUE); // Lock mouse to window and hide it from view 
-				myCamera.RotateX((-evnt.motion.xrel / 1000.0f)); // Rotate camera on X axis
-				myCamera.RotateY((evnt.motion.yrel / 1000.0f )); // Rotate camera on Y axis
+				myCamera.RotateX((-evnt.motion.xrel / 1000.0f)); // Rotate camera on X axis (Remove the - on the xrel to invert the rotation)
+				myCamera.RotateY((-evnt.motion.yrel / 1000.0f)); // Rotate camera on Y axis (Remove the - on the yrel to invert the rotation)
 				break;
 		}
 	}
@@ -136,18 +132,11 @@ void GameProcess::drawGame()
 	_gameDisplay.clearDisplayBuffer(0.0f, 0.0f, 0.0f, 1.0f);
 	
 	//drawFog();
-	
-	skyShader.Use();
-	skyShader.UpdateSky(transform, myCamera);
-	sky.drawSkyBox();
-	
-	objectHandler.drawObjects(myCamera);
+	sky.drawSkyBox(myCamera);
+	objectHandler.drawObjects(myCamera,counter);
 	
 	//glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	//glStencilMask(0xFF);
-	drawSphere(shader,mesh1, texture, sinf(counter), 0.5, 0.0);
-	
-	drawSphere(shader,mesh2, texture1, -sinf(counter), -0.5, -sinf(counter) * 5);
 	
 	drawSphere(lightShader, lightCube, texture, 5.0, 1.5, 0.0);
 	
@@ -155,9 +144,7 @@ void GameProcess::drawGame()
 	transform.SetRot(glm::vec3(0.0, 0.0, 0.0));
 	transform.SetScale(glm::vec3(1.0, 1.0, 1.0));
 	
-	reflectShader.Use();
-	reflectShader.Update(transform, myCamera);
-	sky.drawCube();
+	sky.drawCube(transform, myCamera);
 
 	counter += deltatime * 0.001f;
 	// Enable Writing to the Stencil Buffer?
@@ -176,15 +163,14 @@ void GameProcess::drawGame()
 	*/
 	glEnableClientState(GL_COLOR_ARRAY); 
 	glEnd();
-	
 	_gameDisplay.swapBuffer();
 } 
 
 void GameProcess::drawSphere(ShaderHandler& shader,MeshHandler& mesh, TextureMap& texture,float x,float y,float z)
 {
 	transform.SetPos(glm::vec3(x, y, z));
-	transform.SetRot(glm::vec3(0.0, 0.0, 0.0));
-	transform.SetScale(glm::vec3(0.6, 0.6, 0.6));
+	transform.SetRot(glm::vec3(0.0f, 0.0f, 0.0f));
+	transform.SetScale(glm::vec3(1.0f, 1.0f, 1.0f));
 	shader.Use();
 	shader.Update(transform, myCamera);
 	texture.Bind(0);

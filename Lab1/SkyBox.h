@@ -15,8 +15,8 @@ public:
 	void initSkyBox();
 	void loadCubeMap();
 
-	void drawSkyBox();
-	void drawCube();
+	void drawSkyBox(const WorldCamera& camera);
+	void drawCube(const Transform& transform, const WorldCamera& camera);
 	
 	unsigned int textureID;
 	
@@ -25,6 +25,7 @@ private:
 	GLuint vao;
 	GLuint ebo;
 	unsigned int cubeVAO, cubeVBO;
-	ShaderHandler shader;
+	ShaderHandler skyShader;
+	ShaderHandler reflectShader;
 };
 

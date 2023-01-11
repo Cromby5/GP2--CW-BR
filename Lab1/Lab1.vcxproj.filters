@@ -30,9 +30,6 @@
     <ClCompile Include="ShaderHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stb_image.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TextureMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -46,6 +43,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ObjectHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -126,9 +126,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Object Include="..\res\Models\350z.obj">
-      <Filter>Resource Files</Filter>
-    </Object>
     <Object Include="..\res\Models\cube.obj">
       <Filter>Resource Files</Filter>
     </Object>
@@ -136,6 +133,12 @@
       <Filter>Resource Files</Filter>
     </Object>
     <Object Include="..\res\Models\canoe.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
+    <Object Include="..\res\Models\cart.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
+    <Object Include="..\res\Models\backpack.obj">
       <Filter>Resource Files</Filter>
     </Object>
   </ItemGroup>

@@ -13,7 +13,7 @@ public:
 	void Use(); // Set gpu to use our shaders
 	//void ParseShader(const std::string& filename); // Parse the shader files to seperate vert and frag shaders
 	void Update(const Transform& transform, const WorldCamera& camera);
-	void UpdateSky(const Transform& transform, const WorldCamera& camera);
+	void UpdateSky(const WorldCamera& camera);
 	void UpdateLight(const Transform& transform, const WorldCamera& camera);
 	
 	void init(const std::string& filename);
@@ -37,11 +37,11 @@ private:
 		PROJECTION,
 		CAMERA_POS,
 		LIGHT_POS,
-		NORMAL,
 		SKYBOX,
 		LIGHT_COLOUR,
-		//DIFFUSE,
-		//SPECULAR,
+		DIFFUSE,
+		NORMALMAP,
+		SPECULAR,
 		NUM_UNIFORMS
 	};
 

@@ -10,6 +10,8 @@ SkyBox::SkyBox()
 	vao = 0;
 	vbo = 0;
 	ebo = 0;
+	cubeVAO = 0;
+	cubeVBO = 0;
 }
 
 SkyBox::~SkyBox()
@@ -110,7 +112,8 @@ float cubeVertices[] = {
 
 void SkyBox::initSkyBox()
 {
-	shader.init("..\\res\\SkyboxShader");
+	skyShader.init("..\\res\\SkyboxShader");
+	reflectShader.init("..\\res\\ReflectShader");
 	// cube VAO
 	glGenVertexArrays(1, &cubeVAO);
 	glGenBuffers(1, &cubeVBO);
@@ -180,10 +183,11 @@ void SkyBox::loadCubeMap()
 }
 
 
-void SkyBox::drawSkyBox()
+void SkyBox::drawSkyBox(const WorldCamera& camera)
 {
+	skyShader.Use();
+	skyShader.UpdateSky(camera);
 	glDepthMask(GL_FALSE);
-	
 	glBindVertexArray(vao);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
@@ -192,14 +196,15 @@ void SkyBox::drawSkyBox()
 	glDepthMask(GL_TRUE);
 }
 
-void SkyBox::drawCube()
+void SkyBox::drawCube(const Transform& transform, const WorldCamera& camera)
 {
+	reflectShader.Use();
+	reflectShader.Update(transform, camera);
 	glBindVertexArray(cubeVAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
 	glBindVertexArray(0);
-
 }
 
 

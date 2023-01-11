@@ -48,20 +48,21 @@ void ShaderHandler::init(const std::string& filename)
 	
 	uniforms[MODEL] = glGetUniformLocation(program, "model");
 	uniforms[CAMERA_POS] = glGetUniformLocation(program, "cameraPos");
-	uniforms[NORMAL] = glGetUniformLocation(program, "normal");
+	uniforms[NORMALMAP] = glGetUniformLocation(program, "normalMap");
 
 	uniforms[SKYBOX] = glGetUniformLocation(program, "skybox");
 
 	uniforms[LIGHT_COLOUR] = glGetUniformLocation(program, "lightColour");
 	uniforms[LIGHT_POS] = glGetUniformLocation(program, "lightPos");
 
-	//uniforms[DIFFUSE] = glGetUniformLocation(program, "diffuse");
-	//uniforms[SPECULAR] = glGetUniformLocation(program, "specular");
+	uniforms[DIFFUSE] = glGetUniformLocation(program, "diffuse");
+	uniforms[SPECULAR] = glGetUniformLocation(program, "specular");
 	
 
 	glUniform1i(uniforms[SKYBOX], 0);
-	//glUniform1i(uniforms[DIFFUSE], 0);
-	//glUniform1i(uniforms[SPECULAR], 1);
+	glUniform1i(uniforms[DIFFUSE], 0);
+	glUniform1i(uniforms[NORMALMAP], 1);
+	glUniform1i(uniforms[SPECULAR], 2);
 		
 }
 
@@ -90,11 +91,12 @@ void ShaderHandler::Update(const Transform& transform, const WorldCamera& camera
 	glUniform3fv(uniforms[CAMERA_POS], 1, &camera.GetPos()[0]);
 	
 	glm::vec4 lightColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	glm::vec3 lightPos = glm::vec3(5.0f, 1.5f, 0.0f);
 	glUniform4fv(uniforms[LIGHT_COLOUR], 1, &lightColour[0]);
-	glUniform3fv(uniforms[LIGHT_POS], 1, &transform.GetPos()[0]);
+	glUniform3fv(uniforms[LIGHT_POS], 1, &lightPos[0]);
 }
 
-void ShaderHandler::UpdateSky(const Transform& transform, const WorldCamera& camera)
+void ShaderHandler::UpdateSky(const WorldCamera& camera)
 {
 	//mvp remove translation
 	glm::mat4 view = glm::mat4(glm::mat3(camera.GetView()));

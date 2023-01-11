@@ -8,6 +8,7 @@ in vec3 Normal;
 in vec3 currentPos;
 
 uniform sampler2D diffuse;
+uniform sampler2D normalMap;
 uniform sampler2D spec;
 
 uniform vec4 lightColour;
@@ -20,8 +21,9 @@ void main()
 	float ambient = 0.20f; // Adding an ambient light value
 	// Diffuse Lighting
 	vec3 normal = normalize(Normal);
+	//NORMAL MAP APPLICATION test
+	//vec3 normal = normalize(texture(normalMap, texCoord0).xyz *2.0f -1.0f);
 	vec3 lightDirection = normalize(lightPos - currentPos);
-	//vec3 lightDirection = normalize(currentPos - lightPos);
 	
 	float diffuseLight = max(dot(normal,lightDirection), 0.0f);
 	

@@ -42,21 +42,19 @@ private:
 	WorldCamera myCamera;
 	
 	ShaderHandler shader;
-	ShaderHandler skyShader;
-	ShaderHandler reflectShader;
-	ShaderHandler refractShader;
 	ShaderHandler lightShader;
 		
 	TextureMap texture;
 	TextureMap texture1;
 	
 	AudioHandler gameAudio;
+	
 	SkyBox sky;
-
 	ObjectHandler objectHandler;
 
 		
 	float counter = 0.0f;
+	float speed = 0.5f;
 	
 	float deltatime = 0.0f;
 	float lastTicks = 0.0f;

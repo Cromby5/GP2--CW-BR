@@ -50,15 +50,15 @@ public:
 
 	void MoveRight(float speed)
 	{
-		pos += glm::normalize(glm::cross(up, forward)) * speed;
+		pos += glm::normalize(glm::cross(forward, up)) * speed;
 	}
 
 	void RotateY(float angle)
 	{
-		glm::vec3 right = glm::normalize(glm::cross(up, forward));
+		glm::vec3 right = glm::normalize(glm::cross(forward, up));
 
 		forward = glm::vec3(glm::normalize(glm::rotate(angle, right) * glm::vec4(forward, 0.0)));
-		up = glm::normalize(glm::cross(forward, right));
+		up = glm::normalize(glm::cross(right, forward));
 	}
 
 	void RotateX(float angle)

@@ -8,9 +8,6 @@ TextureMap::TextureMap()
 	textureHandler[0] = 0;
 	textureHandler[1] = 0;
 	textureHandler[2] = 0;
-	textureHandler[3] = 0;
-	textureHandler[4] = 0;
-	
 }
 
  TextureMap::TextureMap(const std::string& fileName)
@@ -29,6 +26,7 @@ TextureMap::~TextureMap()
 void TextureMap::LoadTexture(const std::string& fileName, GLuint unit)
 {
 	int width, height, numComponents; //width, height, and no of components of image
+	//stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
 	unsigned char* imageData = stbi_load((fileName).c_str(), &width, &height, &numComponents, 4); //load the image and store the data
 
 	if (imageData == NULL)
@@ -61,7 +59,7 @@ void TextureMap::LoadTexture(const std::string& fileName, GLuint unit)
 		break;
 	}
 		
-	stbi_image_free(imageData);
+	stbi_image_free(imageData); // Free up the image memory
 	
 	glBindTexture(GL_TEXTURE_2D, 0); //Unbind texture
 }
@@ -72,7 +70,7 @@ void TextureMap::Bind(unsigned int unit)
 	assert(unit >= 0 && unit <= NUM_TYPES); 
 	glActiveTexture(GL_TEXTURE0 + unit); //set acitve texture unit
 	glBindTexture(GL_TEXTURE_2D, textureHandler[unit]); //type of and texture to bind to unit
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0); // set active texture unit back to 0 once bound
 }
 
 
