@@ -4,9 +4,6 @@
 #include <SDL/SDL_mixer.h>
 #include <vector>
 #include "DisplayWindow.h" 
-#include "ShaderHandler.h"
-#include "MeshHandler.h"
-#include "TextureMap.h"
 #include "transform.h"
 #include "AudioHandler.h"
 #include "WorldCamera.h"
@@ -27,42 +24,24 @@ private:
 
 	void initSystems();
 	void Input();
-	void gameLoop();
+	void gameProcessLoop();
 	void drawGame();
-	void drawSphere(ShaderHandler& shader,MeshHandler& mesh, TextureMap& texture, float x, float y, float z);
 	void drawFog();
-	bool collision(glm::vec3 m1Pos, float m1Rad, glm::vec3 m2Pos, float m2Rad);
-	//void playAudio(unsigned int Source, glm::vec3 pos);
 
 	DisplayWindow _gameDisplay;
 	GameState _gameState;
-	MeshHandler mesh1;
-	MeshHandler mesh2;
-	MeshHandler lightCube;
 	WorldCamera myCamera;
-	
-	ShaderHandler shader;
-	ShaderHandler lightShader;
-		
-	TextureMap texture;
-	TextureMap texture1;
 	
 	AudioHandler gameAudio;
 	
 	SkyBox sky;
 	ObjectHandler objectHandler;
 
-		
 	float counter = 0.0f;
 	float speed = 0.5f;
-	
+	// deltatime variables, keeping track of time and keep it consitent between variable frame rates
 	float deltatime = 0.0f;
 	float lastTicks = 0.0f;
 	float currentTicks = 0.0f;
-	
-	unsigned int whistle = 0;
-	unsigned int backGroundMusic = 0;
-
-	
 };
 

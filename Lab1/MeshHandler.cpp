@@ -23,28 +23,28 @@ void MeshHandler::initModel(const IndexedModel& model)
 {
 	drawCount = model.indices.size();
 
-	glGenVertexArrays(1, &vertexArrayObject); //generate a vertex array and store it in the VAO
-	glBindVertexArray(vertexArrayObject); //bind the VAO (any operation that works on a VAO will work on our bound VAO - binding)
+	glGenVertexArrays(1, &VAO); // generate a vertex array and store it in the VAO
+	glBindVertexArray(VAO); // bind the VAO (any operation that works on a VAO will work on our bound VAO - binding)
 
-	glGenBuffers(NUM_BUFFERS, vertexArrayBuffers); //generate our buffers based of our array of data/buffers - GLuint vertexArrayBuffers[NUM_BUFFERS];
+	glGenBuffers(NUM_BUFFERS, VAB); // generate our buffers based of our array of data/buffers - GLuint vertexArrayBuffers[NUM_BUFFERS];
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[POSITION_VB]); //tell opengl what type of data the buffer is (GL_ARRAY_BUFFER), and pass the data
-	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.positions[0]), &model.positions[0], GL_STATIC_DRAW); //move the data to the GPU - type of data, size of data, starting address (pointer) of data, where do we store the data on the GPU (determined by type)
+	glBindBuffer(GL_ARRAY_BUFFER, VAB[POSITION_VB]); // tell opengl what type of data the buffer is (GL_ARRAY_BUFFER), and pass the data
+	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.positions[0]), &model.positions[0], GL_STATIC_DRAW); // move the data to the GPU - type of data, size of data, starting address (pointer) of data, where do we store the data on the GPU (determined by type)
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[TEXCOORD_VB]); //tell opengl what type of data the buffer is (GL_ARRAY_BUFFER), and pass the data
-	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.texCoords[0]), &model.texCoords[0], GL_STATIC_DRAW); //move the data to the GPU - type of data, size of data, starting address (pointer) of data, where do we store the data on the GPU
+	glBindBuffer(GL_ARRAY_BUFFER, VAB[TEXCOORD_VB]); // tell opengl what type of data the buffer is (GL_ARRAY_BUFFER), and pass the data
+	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.texCoords[0]), &model.texCoords[0], GL_STATIC_DRAW); // move the data to the GPU - type of data, size of data, starting address (pointer) of data, where do we store the data on the GPU
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[NORMAL_VB]);
+	glBindBuffer(GL_ARRAY_BUFFER, VAB[NORMAL_VB]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(model.normals[0]) * model.normals.size(), &model.normals[0], GL_STATIC_DRAW);
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexArrayBuffers[INDEX_VB]); //tell opengl what type of data the buffer is (GL_ARRAY_BUFFER), and pass the data
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(model.indices[0]), &model.indices[0], GL_STATIC_DRAW); //move the data to the GPU - type of data, size of data, starting address (pointer) of data, where do we store the data on the GPU
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, VAB[INDEX_VB]); // tell opengl what type of data the buffer is (GL_ARRAY_BUFFER), and pass the data
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(model.indices[0]), &model.indices[0], GL_STATIC_DRAW); // move the data to the GPU - type of data, size of data, starting address (pointer) of data, where do we store the data on the GPU
 
 	glBindVertexArray(0); // unbind our VAO
 }
@@ -52,11 +52,11 @@ void MeshHandler::initModel(const IndexedModel& model)
 MeshHandler::MeshHandler()
 {
 	drawCount = NULL;
-	vertexArrayBuffers[0] = NULL;
-	vertexArrayBuffers[1] = NULL;
-	vertexArrayBuffers[2] = NULL;
-	vertexArrayBuffers[3] = NULL;
-	vertexArrayObject = NULL;
+	VAB[0] = NULL;
+	VAB[1] = NULL;
+	VAB[2] = NULL;
+	VAB[3] = NULL;
+	VAO = NULL;
 }
 
 MeshHandler::MeshHandler(const std::string& filename)
@@ -74,12 +74,12 @@ void MeshHandler::loadModel(const std::string& filename)
 
 MeshHandler::~MeshHandler()
 {
-	glDeleteVertexArrays(1, &vertexArrayObject); // delete arrays
+	glDeleteVertexArrays(1, &VAO); // delete arrays
 }
 
 void MeshHandler::draw()
 {
-	glBindVertexArray(vertexArrayObject);
+	glBindVertexArray(VAO);
 
 	glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_INT, 0);
 	//glDrawArrays(GL_TRIANGLES, 0, drawCount);

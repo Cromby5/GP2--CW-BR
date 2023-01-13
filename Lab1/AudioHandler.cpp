@@ -20,7 +20,13 @@ AudioHandler::~AudioHandler()
     SDL_Quit();
 }
 
-void AudioHandler::addSoundEffect(const char* path)
+void AudioHandler::initAudio()
+{
+    addSound("..\\res\\Audio\\whistlere.wav");
+    addBackMusic("..\\res\\Audio\\background.wav");
+}
+
+void AudioHandler::addSound(const char* path)
 {
     Mix_Chunk* tmpChunk = Mix_LoadWAV(path);
 
@@ -35,7 +41,7 @@ void AudioHandler::addSoundEffect(const char* path)
     }
 }
 
-void AudioHandler::addAudioTrack(const char* path)
+void AudioHandler::addBackMusic(const char* path)
 {
     backgroundMusic = Mix_LoadMUS(path);
 
@@ -45,7 +51,7 @@ void AudioHandler::addAudioTrack(const char* path)
     }
 }
 
-void AudioHandler::playSoundEffect(const int which) const
+void AudioHandler::playSound(const int which) const
 {
     if (which > mSoundEffectBank.size() - 1)
     {
@@ -58,11 +64,11 @@ void AudioHandler::playSoundEffect(const int which) const
     std::cout << "Played Sound: " << which << '\n';
 }
 
-void AudioHandler::playAudioTrack()
+void AudioHandler::playBackMusic()
 {
     if (Mix_PlayingMusic() == 0)
     {
-        //Play the music
+        // Play the music 
         Mix_PlayMusic(backgroundMusic, -1);
     }
 }

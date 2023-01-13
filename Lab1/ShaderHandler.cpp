@@ -30,7 +30,9 @@ void ShaderHandler::init(const std::string& filename)
 		glAttachShader(program, shaders[i]); //add all our shaders to the shader program "shaders"
 		glDeleteShader(shaders[i]); // delete the shaders, once attached to the program (they are now saved in the program) 
 	}
-	// These may be outdated when using version 330 over version 120 due to syntax changes. e.g. attribute has changed to layout where the location is specified in the shader
+	// These may be outdated when using version 330 over version 120 due to syntax changes. 
+	// e.g. attribute has changed to layout where the location is specified in the shader
+	// They are left in for use with version 120 shaders 
 	glBindAttribLocation(program, 0, "position"); // associate attribute variable with our shader program attribute (in this case attribute vec3 position;)
 	glBindAttribLocation(program, 1, "texCoord");
 	glBindAttribLocation(program, 2, "normals");
@@ -91,14 +93,14 @@ void ShaderHandler::Update(const Transform& transform, const WorldCamera& camera
 	glUniform3fv(uniforms[CAMERA_POS], 1, &camera.GetPos()[0]);
 	
 	glm::vec4 lightColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	glm::vec3 lightPos = glm::vec3(5.0f, 1.5f, 0.0f);
+	glm::vec3 lightPos = glm::vec3(0.0f, 3.0f, 0.0f);
 	glUniform4fv(uniforms[LIGHT_COLOUR], 1, &lightColour[0]);
 	glUniform3fv(uniforms[LIGHT_POS], 1, &lightPos[0]);
 }
 
 void ShaderHandler::UpdateSky(const WorldCamera& camera)
 {
-	//mvp remove translation
+	// vp remove translation
 	glm::mat4 view = glm::mat4(glm::mat3(camera.GetView()));
 	glm::mat4 projection = camera.GetProjection();
 	glUniformMatrix4fv(uniforms[VIEW], 1, GLU_FALSE, &view[0][0]);

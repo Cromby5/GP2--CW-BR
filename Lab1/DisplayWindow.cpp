@@ -15,12 +15,13 @@ DisplayWindow::~DisplayWindow()
 	SDL_Quit();
 }
 
-float DisplayWindow::getScreenWidth() { return screenWidth; } //getters
+float DisplayWindow::getScreenWidth() { return screenWidth; } // getters
 float DisplayWindow::getScreenHeight() { return screenHeight; }
 SDL_Window* DisplayWindow::getWindow() { return sdlWindow; }
 
 void DisplayWindow::returnError(std::string errorString)
 {
+	// Show the error message and quit the program
 	std::cout << errorString << std::endl;
 	std::cout << "press any  key to quit...";
 	int in;

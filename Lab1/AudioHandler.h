@@ -10,10 +10,11 @@ class AudioHandler
 		AudioHandler();
 		~AudioHandler();
 		
-		void addSoundEffect(const char* path);
-		void addAudioTrack(const char* path);
-		void playSoundEffect(const int which) const;
-		void playAudioTrack();
+		void initAudio();
+		void addSound(const char* path);
+		void addBackMusic(const char* path);
+		void playSound(const int which) const;
+		void playBackMusic();
 
 	private:
 		Mix_Music* backgroundMusic;

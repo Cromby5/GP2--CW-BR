@@ -27,7 +27,7 @@ private:
 		NUM_TYPES
 	};
 	
-	GLuint textureHandler[NUM_TYPES];
+	GLuint textureID[NUM_TYPES];
 	
 	
 };

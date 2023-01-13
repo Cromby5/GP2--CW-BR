@@ -141,6 +141,15 @@
     <Object Include="..\res\Models\backpack.obj">
       <Filter>Resource Files</Filter>
     </Object>
+    <Object Include="..\res\Models\CROCODIL.OBJ">
+      <Filter>Resource Files</Filter>
+    </Object>
+    <Object Include="..\res\Models\Sci-fi_Container_Box.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
+    <Object Include="..\res\Models\Wooden Crate 01.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\res\Audio\background.wav">

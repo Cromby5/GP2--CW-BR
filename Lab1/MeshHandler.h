@@ -79,7 +79,7 @@ private:
 	};
 
 	Sphere meshSphere;
-	GLuint vertexArrayObject;
-	GLuint vertexArrayBuffers[NUM_BUFFERS]; // create our array of buffers
+	GLuint VAO;
+	GLuint VAB[NUM_BUFFERS]; // create our array of buffers
 	unsigned int drawCount; // how much of the vertexArrayObject do we want to draw
 };

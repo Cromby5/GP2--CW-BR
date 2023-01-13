@@ -22,8 +22,8 @@ private:
 
 	void returnError(std::string errorString);
 	
-	SDL_GLContext glContext; //global variable to hold the context
-	SDL_Window* sdlWindow; //holds pointer to out window
+	SDL_GLContext glContext; // global variable to hold the context
+	SDL_Window* sdlWindow; // holds pointer to out window
 	float screenWidth;
 	float screenHeight;
 };
