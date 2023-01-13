@@ -10,3 +10,6 @@ The mouse rotates the camera
 WASD for movement
 
 ESC to quit the program
+
+Working video 
+https://youtu.be/SGFV8nkm344
